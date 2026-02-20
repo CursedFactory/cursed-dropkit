@@ -1,53 +1,48 @@
 import { existsSync, readdirSync } from "fs";
-import { basename, extname, join } from "path";
+import { basename, dirname, join } from "path";
 import type { ContentKind } from "./types.ts";
 
 export class FileScanner {
   /// List files for one content kind under a root.
   listByKind(rootDir: string, kind: ContentKind): string[] {
-    const candidates = [join(rootDir, `${kind}s`), join(rootDir, "assets"), join(rootDir, "assets", `${kind}s`)];
+    if (kind === "agent") return this.listMarkdownFiles(join(rootDir, "agent"));
+    if (kind === "command") return this.listMarkdownFiles(join(rootDir, "command"));
+    return this.listSkillFiles(rootDir);
+  }
+
+  /// List markdown files in one directory (non-recursive).
+  listMarkdownFiles(directory: string): string[] {
+    if (!existsSync(directory)) return [];
 
     const found = new Set<string>();
-    for (const folder of candidates) {
-      if (!existsSync(folder)) continue;
-
-      for (const entry of readdirSync(folder, { withFileTypes: true })) {
-        if (!entry.isFile()) continue;
-        const filePath = join(folder, entry.name);
-        if (!this.matchesKindFile(filePath, kind)) continue;
-        found.add(filePath);
-      }
+    for (const entry of readdirSync(directory, { withFileTypes: true })) {
+      if (!entry.isFile()) continue;
+      if (!entry.name.endsWith(".md")) continue;
+      found.add(join(directory, entry.name));
     }
 
     return [...found].sort();
   }
 
-  suffixForKind(kind: ContentKind): string {
-    if (kind === "agent") return ".agent.md";
-    if (kind === "command") return ".cmd.md";
-    return ".skill.md";
-  }
+  /// List OCX/OpenCode skill files at skills/<name>/SKILL.md.
+  listSkillFiles(rootDir: string): string[] {
+    const skillsDir = join(rootDir, "skills");
+    if (!existsSync(skillsDir)) return [];
 
-  matchesKindFile(filePath: string, kind: ContentKind): boolean {
-    const fileName = basename(filePath);
-    if (fileName.endsWith(this.suffixForKind(kind))) return true;
+    const found = new Set<string>();
+    for (const entry of readdirSync(skillsDir, { withFileTypes: true })) {
+      if (!entry.isDirectory()) continue;
+      const skillPath = join(skillsDir, entry.name, "SKILL.md");
+      if (!existsSync(skillPath)) continue;
+      found.add(skillPath);
+    }
 
-    // Allow legacy shorthand in kind folders: agents/<name>.md, commands/<name>.md, skills/<name>.md
-    const parentName = basename(join(filePath, ".."));
-    return parentName === `${kind}s` && fileName.endsWith(".md");
+    return [...found].sort();
   }
 
   nameFromPath(filePath: string, kind: ContentKind): string {
-    const fileName = basename(filePath);
-    const suffix = this.suffixForKind(kind);
-    if (fileName.endsWith(suffix)) {
-      return basename(filePath, suffix);
-    }
+    if (kind === "skill") return basename(dirname(filePath));
 
-    if (fileName.endsWith(".md")) {
-      return basename(filePath, ".md");
-    }
-
-    return basename(filePath, extname(filePath));
+    return basename(filePath, ".md");
   }
 }

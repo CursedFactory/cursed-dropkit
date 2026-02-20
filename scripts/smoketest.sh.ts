@@ -5,5 +5,6 @@ import { runCommand } from "./helpers/run_command.sh.ts";
 
 const repoRoot = findRepoRoot(import.meta.dir);
 
-await runCommand(["npm", "install", "--prefix", "smoketest"], { cwd: repoRoot });
-await runCommand(["node", "smoketest/run_smoke.mjs"], { cwd: repoRoot });
+await runCommand(["npm", "install", "--no-save", "@opencode-ai/plugin"], { cwd: repoRoot });
+await runCommand(["npm", "install", "--prefix", "smoketest/harness"], { cwd: repoRoot });
+await runCommand(["node", "smoketest/harness/run_smoke.mjs"], { cwd: repoRoot });

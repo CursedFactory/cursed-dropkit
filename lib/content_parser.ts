@@ -118,19 +118,15 @@ export class ContentParser {
     source: ContentSource,
     diagnostics: LoadDiagnostic[],
   ): ParseResult {
-    const skillName = typeof data.name === "string" ? data.name.trim() : "";
-    const description = typeof data.description === "string" ? data.description.trim() : "";
+    const skillName = stem;
+    const frontmatterName = typeof data.name === "string" ? data.name.trim() : "";
+    const description = typeof data.description === "string" ? data.description.trim() : `Skill '${skillName}'`;
 
-    if (!skillName || !description) {
-      diagnostics.push(this.warn("skill_missing_required_fields", "Skill skipped: missing 'name' or 'description'", filePath));
-      return { diagnostics };
-    }
-
-    if (skillName !== stem) {
+    if (frontmatterName && frontmatterName !== skillName) {
       diagnostics.push(
         this.warn(
           "skill_name_mismatch",
-          `Skill skipped: frontmatter name '${skillName}' must match filename '${stem}'`,
+          `Skill skipped: frontmatter name '${frontmatterName}' must match directory name '${skillName}'`,
           filePath,
         ),
       );
