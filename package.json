@@ -1,0 +1,49 @@
+{
+  "name": "cursed-dropkit",
+  "version": "0.0.1",
+  "description": "Reusable dropkit library for building OpenCode content-loading plugins.",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./index.ts",
+  "module": "./index.ts",
+  "types": "./index.ts",
+  "exports": {
+    ".": "./index.ts",
+    "./lib": "./lib/index.ts",
+    "./lib/*": "./lib/*"
+  },
+  "files": [
+    "index.ts",
+    "lib",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "bun scripts/build.sh.ts",
+    "check": "bun scripts/check.sh.ts",
+    "test": "bun scripts/test.sh.ts",
+    "ci": "bun scripts/ci.sh.ts",
+    "smoke": "bun scripts/smoke_import.sh.ts",
+    "smoketest": "bun scripts/smoketest.sh.ts",
+    "smoketest:container": "bun scripts/smoketest_container.sh.ts",
+    "version:set": "bun scripts/version.sh.ts",
+    "publish:npm:dry-run": "bun scripts/npm_publish_dry_run.sh.ts",
+    "release:dry-run": "bun scripts/release_dry_run.sh.ts"
+  },
+  "keywords": [
+    "opencode",
+    "plugin",
+    "agents",
+    "commands",
+    "skills",
+    "dropkit"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cursed/cursed-dropkit.git"
+  },
+  "peerDependencies": {
+    "@opencode-ai/plugin": "*"
+  }
+}
