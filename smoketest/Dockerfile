@@ -26,6 +26,7 @@ WORKDIR /workspace
 
 COPY . /workspace
 
+RUN npm install --no-save @opencode-ai/plugin
 RUN npm install --prefix smoketest
 
 CMD ["node", "smoketest/run_smoke.mjs"]
