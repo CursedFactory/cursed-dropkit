@@ -1,6 +1,6 @@
 import { spawn } from "node:child_process";
 
-const smokeDir = new URL("./", import.meta.url);
+const harnessDir = new URL("./", import.meta.url);
 const smokeModel = process.env.SMOKETEST_MODEL || "openrouter/x-ai/grok-4.1-fast";
 
 function runCapture(command, args, options = {}) {
@@ -46,9 +46,9 @@ try {
     "opencode",
     ["run", "--model", smokeModel, "--command", "ping", "ci-arg", "--format", "json"],
     {
-      cwd: smokeDir,
+      cwd: harnessDir,
       env: {
-        OPENCODE_CONFIG: new URL("opencode.json", smokeDir).pathname,
+        OPENCODE_CONFIG: new URL("opencode.json", harnessDir).pathname,
         OPENCODE_DISABLE_MODELS_FETCH: "true",
         OPENCODE_DISABLE_DEFAULT_PLUGINS: "true",
       },

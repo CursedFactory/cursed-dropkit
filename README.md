@@ -52,8 +52,9 @@ Peer dependency expected in consumer projects:
 
 This repo includes an end-to-end OpenCode smoketest under `smoketest/`:
 
-- Loads a plugin via `.opencode/plugins/smoketest.ts` using this library
-- Provides a basic command at `smoketest/plugin/assets/ping.cmd.md`
+- Loads an example dropkit plugin at `smoketest/example-dropkit-command/plugin.ts`
+- Provides a command fixture at `smoketest/example-dropkit-command/command/ping.md`
+- Runs the OpenCode harness from `smoketest/harness/`
 - Executes `opencode run --command ping ci-arg`
 - Verifies output contains `SMOKETEST_PLUGIN_COMMAND_MARKER::ci-arg`
 

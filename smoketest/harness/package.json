@@ -1,5 +1,5 @@
 {
-  "name": "cursed-dropkit-smoketest",
+  "name": "cursed-dropkit-smoketest-harness",
   "private": true,
   "type": "module",
   "dependencies": {

@@ -27,6 +27,6 @@ WORKDIR /workspace
 COPY . /workspace
 
 RUN npm install --no-save @opencode-ai/plugin
-RUN npm install --prefix smoketest
+RUN npm install --prefix smoketest/harness
 
-CMD ["node", "smoketest/run_smoke.mjs"]
+CMD ["node", "smoketest/harness/run_smoke.mjs"]
