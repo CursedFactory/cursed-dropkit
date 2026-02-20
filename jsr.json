@@ -1,0 +1,13 @@
+{
+  "name": "@cursed/dropkit",
+  "version": "0.0.1",
+  "exports": {
+    ".": "./index.ts",
+    "./lib": "./lib/index.ts"
+  },
+  "exclude": [
+    ".git",
+    "node_modules",
+    "scripts"
+  ]
+}
